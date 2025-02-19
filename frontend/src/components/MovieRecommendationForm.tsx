@@ -13,7 +13,7 @@ const MovieRecommendationForm = () => {
 
   const getRecommendations = async () => {
     try {
-      const token = localStorage.getItem('token'); // 🔑 Get token from localStorage
+      const token = localStorage.getItem('token');
 
       if (!token) {
         setError('Please log in to get recommendations.');
@@ -25,7 +25,7 @@ const MovieRecommendationForm = () => {
         { query },
         {
           headers: {
-            Authorization: `Bearer ${token}`, // ✅ Pass token in Authorization header
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -44,24 +44,60 @@ const MovieRecommendationForm = () => {
 
   return (
     <div style={{ textAlign: 'center' }}>
-      <h2>Movie Recommendations 🎬</h2>
-      <form onSubmit={handleSubmit}>
+      <h2 style={{ color: '#333', marginBottom: '20px' }}>🎬 Movie Recommendations</h2>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '20px' }}>
         <input
           type="text"
           placeholder="Enter your movie preferences..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          style={{ padding: '8px', width: '60%' }}
+          style={{
+            padding: '10px',
+            width: '60%',
+            border: '2px solid #ccc',
+            borderRadius: '4px',
+            fontSize: '16px',
+          }}
         />
-        <button type="submit" style={{ marginLeft: '10px', padding: '8px 20px' }}>
+        <button
+          type="submit"
+          style={{
+            marginLeft: '10px',
+            padding: '10px 20px',
+            backgroundColor: '#4caf50',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '16px',
+          }}
+        >
           Get Recommendations
         </button>
       </form>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <ul style={{ textAlign: 'left', marginTop: '20px', width: '60%', marginLeft: 'auto', marginRight: 'auto' }}>
+      {error && <p style={{ color: 'red', fontWeight: 'bold' }}>{error}</p>}
+      <ul
+        style={{
+          listStyle: 'none',
+          padding: 0,
+          textAlign: 'left',
+          maxWidth: '800px',
+          margin: '0 auto',
+        }}
+      >
         {recommendations.map((movie, index) => (
-          <li key={index}>
-            <strong>{movie.title}:</strong> {movie.overview}
+          <li
+            key={index}
+            style={{
+              marginBottom: '15px',
+              padding: '15px',
+              backgroundColor: '#f5f5f5',
+              borderRadius: '8px',
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+            }}
+          >
+            <strong style={{ fontSize: '18px' }}>{movie.title}</strong>
+            <p style={{ marginTop: '5px', fontSize: '14px', color: '#555' }}>{movie.overview}</p>
           </li>
         ))}
       </ul>
