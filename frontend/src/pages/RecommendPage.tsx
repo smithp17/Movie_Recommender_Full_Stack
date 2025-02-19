@@ -1,5 +1,6 @@
 import MovieRecommendationForm from '../components/MovieRecommendationForm';
 
+
 const RecommendPage = () => {
   return (
     <div style={{ padding: '20px' }}>

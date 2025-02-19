@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { getRecommendations } from '../services/api';
 
+
 interface Movie {
   title: string;
   overview: string;
