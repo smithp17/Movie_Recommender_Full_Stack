@@ -14,7 +14,15 @@ const PORT = process.env.PORT || 5000;
 
 // ✅ Middlewares
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
-app.use(express.json());
+
+// ✅ Apply JSON parsing ONLY to requests that need it (POST, PUT, DELETE)
+app.use((req, res, next) => {
+  if (['POST', 'PUT', 'DELETE'].includes(req.method)) {
+    express.json()(req, res, next);
+  } else {
+    next();
+  }
+});
 
 // ✅ Routes
 app.use('/api', recommendRoutes);      // Movie recommendation routes
