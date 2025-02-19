@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { getRecommendations } from '../services/api';
-
+import axios from 'axios';
 
 interface Movie {
   title: string;
@@ -10,15 +9,41 @@ interface Movie {
 const MovieRecommendationForm = () => {
   const [query, setQuery] = useState('');
   const [recommendations, setRecommendations] = useState<Movie[]>([]);
+  const [error, setError] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const getRecommendations = async () => {
+    try {
+      const token = localStorage.getItem('token'); // 🔑 Get token from localStorage
+
+      if (!token) {
+        setError('Please log in to get recommendations.');
+        return;
+      }
+
+      const response = await axios.post(
+        'http://localhost:5000/api/recommend',
+        { query },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // ✅ Pass token in Authorization header
+          },
+        }
+      );
+
+      setRecommendations(response.data);
+      setError('');
+    } catch (err: any) {
+      setError(err.response?.data?.error || 'Error fetching recommendations.');
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const data = await getRecommendations(query);
-    setRecommendations(data);
+    getRecommendations();
   };
 
   return (
-    <div>
+    <div style={{ textAlign: 'center' }}>
       <h2>Movie Recommendations 🎬</h2>
       <form onSubmit={handleSubmit}>
         <input
@@ -26,20 +51,20 @@ const MovieRecommendationForm = () => {
           placeholder="Enter your movie preferences..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          required
+          style={{ padding: '8px', width: '60%' }}
         />
-        <button type="submit">Get Recommendations</button>
+        <button type="submit" style={{ marginLeft: '10px', padding: '8px 20px' }}>
+          Get Recommendations
+        </button>
       </form>
-
-      {recommendations.length > 0 && (
-        <ul>
-          {recommendations.map((movie, index) => (
-            <li key={index}>
-              <strong>{movie.title}</strong>: {movie.overview}
-            </li>
-          ))}
-        </ul>
-      )}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      <ul style={{ textAlign: 'left', marginTop: '20px', width: '60%', marginLeft: 'auto', marginRight: 'auto' }}>
+        {recommendations.map((movie, index) => (
+          <li key={index}>
+            <strong>{movie.title}:</strong> {movie.overview}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
