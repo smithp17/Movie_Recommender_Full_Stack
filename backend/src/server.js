@@ -5,19 +5,21 @@ import express from 'express';
 import cors from 'cors';
 
 import recommendRoutes from './routes/recommendRoutes.js';
-import authRoutes from './routes/authRoutes.js'; // ✅ Import authentication routes
-import pool from './db.js'; // (Optional) Keep for direct DB calls
+import authRoutes from './routes/authRoutes.js';
+import taskRoutes from './routes/taskRoutes.js'; // ✅ Import task routes
+import pool from './db.js';
 
-const app = express(); // ✅ Initialize app before using it
+const app = express();
 const PORT = process.env.PORT || 5000;
 
 // ✅ Middlewares
-app.use(cors({ origin: 'http://localhost:3000', credentials: true })); // Allow frontend access
-app.use(express.json()); // Parse incoming JSON requests
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+app.use(express.json());
 
 // ✅ Routes
-app.use('/api', recommendRoutes);      // Recommendation routes
+app.use('/api', recommendRoutes);      // Movie recommendation routes
 app.use('/api/auth', authRoutes);      // Authentication routes
+app.use('/api/tasks', taskRoutes);     // ✅ Task management routes
 
 // ✅ Server Listener
 app.listen(PORT, () => {
