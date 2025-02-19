@@ -1,120 +1,199 @@
-# Movie Watchlist & Task Management System
+# 🎬 Movie Watchlist & Task Management with Movie Recommendation System
 
 ## 📖 Project Overview
-The **Movie Watchlist & Task Management System** is a full-stack web application that allows users to:
-- 📋 Add, edit, and delete movies from their watchlist.
-- 🎬 Mark movies as "Watched" or "Watch".
-- ✅ Perform CRUD (Create, Read, Update, Delete) operations seamlessly.
-- 🔒 Use secure authentication with JWT tokens.
+
+\
+Since I applied for both full-stack and AI intern jobs I decided to make something interesting video: [https://screenrec.com/share/cfptIdoQx8](https://screenrec.com/share/cfptIdoQx8)\
+passwords are hashed when stored.\
+https\://drive.google.com/file/d/1GM28hz-js43SwJM8AvR2-5S4Ph-yF9la/view?usp=sharing\
+This full-stack web application provides users with a **Movie Watchlist & Task Management System** integrated with a **Movie Recommendation Engine**. Users can manage their movie watchlist, mark movies as watched/unwatched, and receive personalized movie recommendations based on their input.
+
+---
 
 ## 🗂️ Technologies Used
-- **Frontend:** React (TypeScript) with Axios and React Router DOM  
-- **Backend:** Node.js, Express.js  
-- **Database:** PostgreSQL  
-- **Authentication:** JWT (JSON Web Tokens)  
-- **Deployment:** Can be deployed using free platforms like Render, Vercel, or Railway.
+
+- **Frontend:** React (TypeScript), Axios, React Router DOM
+- **Backend:** Node.js, Express.js
+- **Database:** PostgreSQL
+- **Machine Learning Model:** Python (TF-IDF for movie recommendations)
+- **Authentication:** JWT (JSON Web Tokens)
+- **Deployment:** Free platforms like Render, Vercel, or Railway
 
 ---
 
 ## 🚀 Project Workflow
 
 ### 1. **User Authentication**
-- Users can register and log in with a username and password.
-- Upon successful login, a JWT token is generated and stored in the browser's local storage.
-- Protected routes (like the watchlist dashboard) are accessible only with a valid token.
+
+- Users register and log in with a username and password.
+- Upon login, a JWT token is generated and stored in local storage.
+- All protected routes validate the token before granting access.
 
 ### 2. **Task (Movie) Management**
-- Users can add movies with titles and descriptions.
-- Existing movies can be edited, deleted, or marked as watched/unwatched.
-- The frontend sends HTTP requests to the backend, which interacts with the PostgreSQL database.
 
-### 3. **Marking as Watched/Unwatched**
-- Clicking the "👀 Watch" button changes it to "✅ Watched" and updates the `iscomplete` field in the database.
-- Clicking "✅ Watched" reverts it to "👀 Watch" and sets `iscomplete` to `false`.
-- Both frontend and backend update instantly without needing to refresh.
+- Users can **add**, **edit**, **delete**, and **toggle** the completion status of movies in their watchlist.
+- The UI provides instant feedback when marking movies as "👀 Watch" or "✅ Watched".
+- The `iscomplete` field in the database reflects the watch status of each movie.
+
+### 3. **Movie Recommendation System**
+
+- The system uses a **TF-IDF-based recommendation engine** built with Python.
+- When users enter a query, the backend sends it to the ML model.
+- The model processes the query against the `tmdb_5000_movies_utf8.csv` dataset to return similar movie titles.
+- Recommendations are displayed instantly on the frontend.
 
 ### 4. **Frontend & Backend Communication**
-- **Axios** handles HTTP requests with appropriate headers, including the JWT token for protected routes.
-- Responses are displayed immediately on the frontend, ensuring a smooth user experience.
+
+- **Axios** handles all HTTP requests with JWT tokens in headers for protected endpoints.
+- Responses are displayed in real-time with no need for page refreshes.
+
+---
+
+## 🛠️ Steps to Set Up the Database
+
+### 1. **Database Creation and Migrations**
+
+- Install and start PostgreSQL.
+- Create a new database:
+
+```bash
+psql -U postgres -c "CREATE DATABASE \"Movies\";"
+```
+
+- Create tables manually or run migration scripts:
+
+```sql
+CREATE TABLE tasks (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  description TEXT,
+  iscomplete BOOLEAN DEFAULT FALSE,
+  userid INTEGER NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  username VARCHAR(255) UNIQUE NOT NULL,
+  password VARCHAR(255) NOT NULL
+);
+```
+
+### 2. **Environment Variables**
+
+Create a `.env` file in the backend directory:
+
+```env
+PORT=5000
+DATABASE_URL=postgresql://postgres:1234@localhost:5432/Movies
+JWT_SECRET=your_jwt_secret
+```
 
 ---
 
 ## 💻 How to Run the Project Locally
 
-### 1. **Clone the Repository**
-```bash
-git clone https://github.com/your-username/movie-watchlist-app.git
-cd movie-watchlist-app
-```
+### 1. **Run the Backend**
 
-### 2. **Backend Setup**
 ```bash
 cd backend
 npm install
-```
-#### Create a `.env` file with the following content:
-```env
-PORT=5000
-DATABASE_URL=postgresql://postgres:1234@localhost:5432/Movies
-JWT_SECRET=your_jwt_secret (any random key)
-```
-#### Run the backend server:
-```bash
 npm start
 ```
-✅ Server runs on `http://localhost:5000`
 
----
+✅ Server runs on `http://localhost:5000`.
 
-### 3. **Frontend Setup**
+### 2. **Run the Frontend**
+
 ```bash
 cd frontend
 npm install
 npm start
 ```
-✅ Frontend runs on `http://localhost:3000`
+
+✅ Frontend available at `http://localhost:3000`.
+
+### 3. **Run the Movie Recommendation Model**
+
+```bash
+cd ml_model
+python recommend.py
+```
+
+✅ The ML server will run on `http://localhost:5001` (if applicable).
+
+---
+
+## 🧪 Testing Notes
+
+- **Frontend:** Use React Testing Library for component tests.
+- **Backend:** Run API endpoint tests with Postman or Jest.
+- **ML Model:** Verify predictions using sample movie queries.
+- ✅ Test toggling movie statuses and ensure immediate UI updates.
+
+---
+
+## 📊 Salary Expectations (Mandatory)
+
+💵 **Expected Monthly Salary:** \$4000 (flexible based on project scope and responsibilities)
+
+---
+
+## 🌐 Deployment Instructions
+
+### 1. **Frontend (Vercel/Netlify)**
+
+- Push code to GitHub.
+- Connect repository to Vercel.
+- Set environment variables for API URLs.
+
+### 2. **Backend (Render/Railway)**
+
+- Deploy via Render with automatic GitHub integration.
+- Add environment variables in the Render dashboard.
+
+### 3. **Database (Railway/Supabase)**
+
+- Host PostgreSQL database and update `DATABASE_URL` in `.env`.
+
+### 4. **Machine Learning Model (Optional)**
+
+- Deploy Python model via Railway or AWS Lambda for serverless predictions.
 
 ---
 
 ## 📝 How to Use the Application
-1. **Register or log in** to gain access to the dashboard.
-2. Navigate to **Task Management** to:
-   - Add a new movie with a title and optional description.
-   - Mark movies as watched/unwatched using the 👀/✅ button.
-   - Edit movie details.
-   - Delete movies from your watchlist.
-3. All actions reflect immediately both in the UI and the database.
 
----
-
-## 🌐 Deployment Options (Free Platforms)
-- **Frontend:** Vercel or Netlify
-- **Backend:** Render or Railway
-- **Database:** Hosted PostgreSQL via Railway or Supabase
-
-> 🔔 *Instructions for deployment are available in the `DEPLOYMENT.md` file.*
+1. **Login/Register:** Create an account or log in.
+2. **Task Management:**
+   - Add new movies with descriptions.
+   - Click "👀 Watch" to mark as watched (changes to "✅ Watched").
+   - Edit or delete movies directly from the dashboard.
+3. **Get Recommendations:**
+   - Enter a movie title and receive up to 5 suggestions.
+   - Add recommended movies directly to the watchlist.
 
 ---
 
 ## 🏆 Features at a Glance
-✅ User authentication with JWT  
-✅ CRUD operations on tasks  
-✅ Instant frontend updates upon changes  
-✅ Protected routes with token validation  
-✅ Simple and user-friendly UI  
+
+✅ User authentication with JWT\
+✅ Real-time watchlist management\
+✅ ML-based movie recommendations\
+✅ Responsive frontend with instant updates\
+✅ Secure backend with token validation
 
 ---
 
-## 🤝 Contributing
-Contributions are welcome! Feel free to open issues or submit pull requests.
+##
 
 ---
 
 ## 📬 Contact
-For any questions or support, reach out via [email@example.com](mailto:email@example.com).
+
+Reach me at [spatne1@umbc.edu](mailto\:spatne1@umbc.edu) for queries or suggestions.
 
 ---
 
-## 📝 License
-This project is licensed under the MIT License. See the `LICENSE` file for details.
+on.
 
