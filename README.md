@@ -137,7 +137,7 @@ python recommend.py
 
 ## 📊 Salary Expectations (Mandatory)
 
-💵 **Expected Monthly Salary:** \$4000 (flexible based on project scope and responsibilities)
+💵 **Expected Monthly Salary:** \$4500 (flexible based on project scope and responsibilities)
 
 ---
 
