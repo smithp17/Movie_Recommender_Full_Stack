@@ -6,6 +6,8 @@
 Since I applied for both full-stack and AI intern jobs I decided to make something interesting video: [https://screenrec.com/share/cfptIdoQx8](https://screenrec.com/share/cfptIdoQx8)\
 passwords are hashed when stored.\
 https\://drive.google.com/file/d/1GM28hz-js43SwJM8AvR2-5S4Ph-yF9la/view?usp=sharing\
+
+dataset link https://drive.google.com/file/d/1dzagdTYDb_aqRYWMhjlagqbe_UvXAyT4/view?usp=sharing
 This full-stack web application provides users with a **Movie Watchlist & Task Management System** integrated with a **Movie Recommendation Engine**. Users can manage their movie watchlist, mark movies as watched/unwatched, and receive personalized movie recommendations based on their input.
 
 ---
